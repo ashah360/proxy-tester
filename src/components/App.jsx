@@ -114,12 +114,12 @@ class App extends Component {
 						<input id="inputPort" type="text"></input>
 					</div>
 
-					<div style={{ display: 'inline-block', marginTop: '40px', float: 'left', width: '48%' }}>
+					<div style={{ display: 'inline-block', marginTop: '40px', float: 'left', width: '49%' }}>
 						<label className='form-label' for="inputUser">{this.state.usernameText[this.state.region]}</label>
 						<input id="inputUser" type="text"></input>
 					</div>
 
-					<div style={{ display: 'inline-block', marginTop: '40px', float: 'right', width: '48%' }}>
+					<div style={{ display: 'inline-block', marginTop: '40px', float: 'right', width: '49%' }}>
 						<label className='form-label' for="inputPassword">{this.state.passwordText[this.state.region]}</label>
 						<input id="inputPassword" type="password"></input>
 					</div>
