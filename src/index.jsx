@@ -4,6 +4,8 @@ import './styles/index.css';
 import App from './components/App.jsx';
 import * as serviceWorker from './serviceWorker';
 
+// import LightTheme from './styles/App-light.css';
+
 ReactDOM.render(<App />, document.getElementById('root'));
 
 // If you want your app to work offline and load faster, you can change
