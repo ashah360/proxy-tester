@@ -49,11 +49,15 @@
 	background: #5575E5;
 }
 
-.red-btn {
+.scarlet-btn {
+	transition-property: background;
+	transition-duration: 0.5s;
 	background: #DB4F58;
 }
 
 .grey-btn {
+	transition-property: background;
+	transition-duration: 0.5s;
   	background: #45444F;
 }
 
@@ -77,7 +81,7 @@
 
 #us-flag,
 #jp-flag,
-#sun-dark {
+#theme-switcher {
 	padding: 10px 10px 30px 10px;
 	cursor: pointer;
 }
