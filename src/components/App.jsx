@@ -145,7 +145,7 @@ class App extends Component {
 
 					<div style={{ display: 'inline-block', float: 'right', width: '24%' }}>
 						<label className={this.state.css['form-label']} htmlFor="inputPing">{this.state.pingText[this.state.region]}</label>
-						<input className={this.state.css['input']} id="inputPing" type="text" value="203 ms" disabled></input>
+						<input className={this.state.css['input']} id={this.state.css['ping']} type="text" value="203 ms" disabled></input>
 					</div>
 
 					<button style={{ marginTop: '15px' }} className={[this.state.css['form-btn'], this.state.css['blue-btn']].join(' ')}>{this.state.pingTestText[this.state.region]}</button>

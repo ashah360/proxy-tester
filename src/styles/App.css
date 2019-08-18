@@ -46,6 +46,8 @@ button {
 	line-height: 16px;
 	text-align: center;
 	letter-spacing: 0.05em;
+	outline: none;
+	box-shadow: none;
 }
 
 *:focus {
