@@ -36,6 +36,7 @@ input:blur {
 }
 
 button {
+	cursor: pointer;
 	text-transform: uppercase;
 	color: #DDDEE8;
 	border-radius: 6px;

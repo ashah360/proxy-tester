@@ -88,6 +88,7 @@
 #jp-flag,
 #sun-dark {
 	padding: 10px 10px 30px 10px;
+	cursor: pointer;
 }
 
 #divider {
@@ -97,6 +98,7 @@
 #cb-paste {
 	display: block;
 	padding: 22px 0px 22px 0px;
+	cursor: pointer;
 
 	text-transform: uppercase;
 	text-align: center;
