@@ -8,8 +8,8 @@ import JPFlagFaded from '../assets/jp-flag-faded.svg';
 import Divider from '../assets/divider.svg';
 import SunDark from '../assets/sun-dark.svg';
 
-import LightTheme from '../styles/App-light.css.js';
-import DarkTheme from '../styles/App-dark.css.js';
+import LightTheme from '../styles/App-light.module.css';
+import DarkTheme from '../styles/App-dark.module.css';
 
 class App extends Component {
 	constructor() {
