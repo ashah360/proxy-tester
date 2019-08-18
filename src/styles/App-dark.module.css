@@ -54,8 +54,8 @@ button {
 }
 
 .container {
-  padding: 27px 33px 0px 32px;
-  background-color: #242329;
+	padding: 27px 33px 0px 32px;
+	background-color: #242329;
 }
 
 .form-label {
@@ -107,12 +107,12 @@ button {
 
 #logo {
 	text-transform: uppercase;
-  font-family: 'Ramabhadra', sans-serif !important;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 18px;
-  line-height: 34px;
-  letter-spacing: 0.195em;
+	font-family: 'Ramabhadra', sans-serif !important;
+	font-style: normal;
+	font-weight: normal;
+	font-size: 18px;
+	line-height: 34px;
+	letter-spacing: 0.195em;
 	margin: 0;
 	padding-bottom: 30px;
 
