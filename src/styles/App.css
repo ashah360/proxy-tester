@@ -1,0 +1,53 @@
+img {
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-o-user-select: none;
+	user-select: none;
+}
+
+input {
+	font-family: 'Roboto', sans-serif, !important;
+	font-style: normal;
+	font-weight: normal;
+	font-size: 14px;
+	line-height: 16px;
+	letter-spacing: 0.05em;
+    color: #45444F;
+    
+	border: 1px solid #DDDEE8;
+	box-sizing: border-box;
+	border-radius: 6px;
+	padding: 10px;
+
+	width: 100%;
+}
+
+input:focus {
+	transition-property: border;
+	transition-duration: 0.5s;
+	border: 1px solid #45444F;
+}
+
+input:blur {
+	transition-property: border;
+	transition-duration: 0.5s; /* This will happen after the hover state and can also be used for consistency on the overall experience */
+	border: 1px solid #DDDEE8;
+}
+
+button {
+	text-transform: uppercase;
+	color: #DDDEE8;
+	border-radius: 6px;
+	font-family: 'Roboto', sans-serif, !important;
+	font-style: normal;
+	font-weight: 900;
+	font-size: 14px;
+	line-height: 16px;
+	text-align: center;
+	letter-spacing: 0.05em;
+}
+
+*:focus {
+    outline: none;
+}
