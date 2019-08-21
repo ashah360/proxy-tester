@@ -5,11 +5,16 @@
   "permissions": [
     "<all_urls>",
     "clipboardRead",
+    "clipboardWrite",
     "proxy",
     "storage",
     "webRequest",
     "webRequestBlocking"
   ],
+  "background": {
+    "persistent": false,
+    "page": "background.html"
+  },
   "browser_action": {
     "default_popup": "index.html",
     "default_icon": {
@@ -24,6 +29,11 @@
     "32": "images/32x32.png",
     "48": "images/48x48.png",
     "128": "images/128x128.png"
+  },
+  "externally_connectable": {
+    "matches": [
+      "<all_urls>"
+    ]
   },
   "content_security_policy": "script-src 'self' 'sha256-IsnM6zwAM7tovuRo2KJbbs0yIx4dqaatT/SQL52K2ns='; object-src 'self'",
   "manifest_version": 2
