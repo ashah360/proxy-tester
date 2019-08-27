@@ -26,6 +26,6 @@
     "48": "images/48x48.png",
     "128": "images/128x128.png"
   },
-  "content_security_policy": "script-src 'self' 'sha256-IsnM6zwAM7tovuRo2KJbbs0yIx4dqaatT/SQL52K2ns='; object-src 'self'",
+  "content_security_policy": "script-src 'self' https://www.google-analytics.com; object-src 'self'",
   "manifest_version": 2
 }
