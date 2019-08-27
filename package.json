@@ -1,7 +1,7 @@
 {
-  "name": "something",
+  "name": "proxy-tester",
+  "description": "Open-source proxy tester for the manual users.",
   "version": "0.1.0",
-  "private": true,
   "dependencies": {
     "react": "^16.9.0",
     "react-dom": "^16.9.0",
