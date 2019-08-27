@@ -242,6 +242,50 @@ function App() {
 
 	const handlePasteBtnClick = _e => {
 		console.log('Paste button clicked');
+
+		function getClipboard() {
+			let result = null;
+			inputProxy.current.value = '';
+			inputProxy.current.select();
+
+			if (document.execCommand('paste')) {
+				result = inputProxy.current.value;
+			} else {
+				console.error('failed to get clipboard content');
+			}
+
+			inputProxy.current.value = '';
+			inputProxy.current.blur();
+
+			return result;
+		}
+
+		const pasteData = getClipboard();
+		const split = pasteData.toString().trim().split(':');
+		const proxySettings = JSON.parse(localStorage.getItem('proxySettings'));
+
+		console.log(pasteData);
+
+		if (split.length === 2) {
+			inputProxy.current.value = split[0];
+			inputPort.current.value = split[1];
+
+			proxySettings.host = split[0];
+			proxySettings.port = split[1];
+		}
+		else if (split.length === 4) {
+			inputProxy.current.value = split[0];
+			inputPort.current.value = split[1];
+			inputUsername.current.value = split[2];
+			inputPassword.current.value = split[3];
+
+			proxySettings.host = split[0];
+			proxySettings.port = split[1];
+			proxySettings.username = split[2];
+			proxySettings.password = split[3];
+		}
+
+		localStorage.setItem('proxySettings', JSON.stringify(proxySettings));
 	};
  
 	const handleConnectBtnClick = _e => {
