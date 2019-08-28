@@ -9,6 +9,13 @@
 	border: 1px solid #DDDEE8;
 	box-sizing: border-box;
 	border-radius: 6px;
+	color: #45444F;
+}
+
+.input:focus {
+	transition-property: border;
+	transition-duration: 0.5s;
+	border: 1px solid #2e2f30;
 }
 
 .container {
@@ -45,7 +52,16 @@
 	height: 36px;
 }
 
+.form-btn:hover {
+	background: #FFFFFF;
+	color: #45444F;
+	transition-property: background;
+	transition-duration: 0.5s;
+}
+
 .blue-btn {
+	transition-property: background;
+	transition-duration: 0.5s;
 	background: #5575E5;
 }
 

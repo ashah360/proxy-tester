@@ -9,6 +9,13 @@
 	border: 1px solid #3C3A44;
 	box-sizing: border-box;
 	border-radius: 6px;
+	color: #DDDEE8;
+}
+
+.input:focus {
+	transition-property: border;
+	transition-duration: 0.5s;
+	border: 1px solid #DDDEE8;
 }
 
 .container {
@@ -46,7 +53,16 @@
 	outline: none;
 }
 
+.form-btn:hover {
+	transition-property: background;
+	transition-duration: 0.5s;
+	background: #45444F;
+	color: #DDDEE8;
+}
+
 .blue-btn {
+	transition-property: background;
+	transition-duration: 0.5s;
 	background: #5575E5;
 	border: none;
 }
@@ -61,6 +77,8 @@
 }
 
 .grey-btn {
+	transition-property: background;
+	transition-duration: 0.5s;
 	background: #242329;
 	border: 2px solid #45444F;
 }

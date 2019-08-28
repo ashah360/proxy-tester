@@ -13,7 +13,6 @@ input {
 	font-size: 14px;
 	line-height: 16px;
 	letter-spacing: 0.05em;
-    color: #45444F;
     
 	border: 1px solid #DDDEE8;
 	box-sizing: border-box;
@@ -21,12 +20,6 @@ input {
 	padding: 10px;
 
 	width: 100%;
-}
-
-input:focus {
-	transition-property: border;
-	transition-duration: 0.5s;
-	border: 1px solid #45444F;
 }
 
 input:blur {
