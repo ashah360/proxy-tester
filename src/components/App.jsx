@@ -6,11 +6,18 @@ import React, {
 } from 'react';
 
 import Logo from '../assets/logo.svg';
+
 import USFlag from '../assets/us-flag.svg';
 import JPFlag from '../assets/jp-flag.svg';
+
 import USFlagFaded from '../assets/us-flag-faded.svg';
 import JPFlagFaded from '../assets/jp-flag-faded.svg';
+import USFlagFadedDark from '../assets/us-flag-faded-dark.svg';
+import JPFlagFadedDark from '../assets/jp-flag-faded-dark.svg';
+
 import Divider from '../assets/divider.svg';
+import DividerDark from '../assets/divider-dark.svg';
+
 import Sun from '../assets/sun.svg';
 import Moon from '../assets/moon.svg';
 
@@ -18,6 +25,8 @@ import LightTheme from '../styles/App-light.module.css';
 import DarkTheme from '../styles/App-dark.module.css';
 
 import '../styles/App.css';
+
+const DEFAULT_DOMAIN = 'kith.com';
 
 function App() {
 	// References
@@ -100,7 +109,7 @@ function App() {
 				port: '',
 				username: '',
 				password: '',
-				domain: ''
+				domain: DEFAULT_DOMAIN
 			})
 		);
 	}
@@ -108,13 +117,14 @@ function App() {
 	// Initialize states with Hooks
 	const [region, setRegion] = useState(localStorage.getItem('region'));
 	const [theme, setTheme] = useState(localStorage.getItem('theme'));
-	const [themeCSS, setThemeCSS] = useState({
+	const [divider, setDivider] = useState((theme === 'light') ? Divider : DividerDark);
+	const [themeCSS] = useState({
 		light: LightTheme,
 		dark: DarkTheme
 	});
 	const [flags, setFlags] = useState({
-		US: localStorage.getItem('region') === 'US' ? USFlag : USFlagFaded,
-		JP: localStorage.getItem('region') === 'US' ? JPFlagFaded : JPFlag
+		US: localStorage.getItem('region') === 'US' ? USFlag : ((theme === 'light') ? USFlagFaded : USFlagFadedDark),
+		JP: localStorage.getItem('region') === 'JP' ? JPFlag : ((theme === 'light') ? JPFlagFaded : JPFlagFadedDark)
 	});
 
 	const css = themeCSS[theme];
@@ -147,6 +157,11 @@ function App() {
 			connectToProxyBtn.current.classList.remove(css['grey-btn']);
 			connectToProxyBtn.current.classList.add(css['scarlet-btn']);
 		}
+
+		setFlags({
+			US: localStorage.getItem('region') === 'US' ? USFlag : ((theme === 'light') ? USFlagFaded : USFlagFadedDark),
+			JP: localStorage.getItem('region') === 'JP' ? JPFlag : ((theme === 'light') ? JPFlagFaded : JPFlagFadedDark)
+		});
 	});
 
 	const connectToProxy = proxy => {
@@ -212,12 +227,14 @@ function App() {
 	};
 
 	const handleThemeChange = _e => {
-		const updatedTheme = theme === 'light' ? 'dark' : 'light';
+		const updatedTheme = (theme === 'light') ? 'dark' : 'light';
 
 		localStorage.setItem('theme', updatedTheme);
-		setTheme(theme === 'light' ? 'dark' : 'light');
 
-		console.log(`Theme changed to: ${theme}`);
+		setTheme(updatedTheme);
+		setDivider((updatedTheme === 'light') ? Divider : DividerDark);
+
+		console.log(`Theme changed to: ${updatedTheme}`);
 	};
 
 	const handleRegionChange = _e => {
@@ -336,8 +353,12 @@ function App() {
 
 		if (proxy.username && !proxy.password) {
 			alert('Proxy password required!');
+
+			return;
 		} else if (proxy.password && !proxy.username) {
 			alert('Proxy username required!');
+
+			return;
 		} else if (!proxy.username && !proxy.password) {
 			useAuthCredentials = false;
 		}
@@ -403,7 +424,7 @@ function App() {
 						alt=''
 					/>
 
-					<img id={css['divider']} src={Divider} alt='' />
+					<img id={css['divider']} src={divider} alt='' />
 
 					<img
 						id={css['theme-switcher']}
@@ -422,6 +443,7 @@ function App() {
 					<input
 						id='inputProxy'
 						className={css['input']}
+						spellcheck='false'
 						onChange={e => handleProxySettingChange('host', e)}
 						ref={inputProxy}
 						type='text'
@@ -437,6 +459,7 @@ function App() {
 					<input
 						id='inputPort'
 						className={css['input']}
+						spellcheck='false'
 						onChange={e => handleProxySettingChange('port', e)}
 						ref={inputPort}
 						type='text'
@@ -457,6 +480,7 @@ function App() {
 					<input
 						id='inputUsername'
 						className={css['input']}
+						spellcheck='false'
 						onChange={e => handleProxySettingChange('username', e)}
 						ref={inputUsername}
 						type='text'
@@ -477,6 +501,7 @@ function App() {
 					<input
 						id='inputPassword'
 						className={css['input']}
+						spellcheck='false'
 						onChange={e => handleProxySettingChange('password', e)}
 						ref={inputPassword}
 						type='password'
@@ -496,6 +521,7 @@ function App() {
 					<input
 						id='inputDomain'
 						className={css['input']}
+						spellcheck='false'
 						onChange={e => handleProxySettingChange('domain', e)}
 						type='text'
 						ref={inputDomain}
@@ -512,6 +538,7 @@ function App() {
 					<input
 						id={css['ping']}
 						className={css['input']}
+						spellcheck='false'
 						ref={ping}
 						type='text'
 						value='0 ms'
@@ -521,7 +548,7 @@ function App() {
 
 				<button
 					style={{ marginTop: '15px' }}
-					className={[css['form-btn'], css['blue-btn']].join(' ')}
+					className={[css['form-btn'], css['blue-btn'], css['ripple']].join(' ')}
 					onClick={handlePingTest}
 					ref={testPingBtn}
 				>
@@ -529,7 +556,7 @@ function App() {
 				</button>
 				<button
 					style={{ marginTop: '16px', marginBottom: '25px' }}
-					className={[css['form-btn'], css['grey-btn']].join(' ')}
+					className={[css['form-btn'], css['grey-btn'], css['ripple']].join(' ')}
 					onClick={handleConnectBtnClick}
 					ref={connectToProxyBtn}
 				>
