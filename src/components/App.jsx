@@ -335,7 +335,9 @@ function App() {
 		}
 	};
 
-	const handlePingTest = () => {
+	const handlePingTest = e => {
+		e.preventDefault();
+
 		testPingBtn.current.innerHTML = translations.pingTestingText[region];
 
 		const proxy = {
