@@ -544,7 +544,6 @@ function App() {
 						spellcheck='false'
 						ref={ping}
 						type='text'
-						value='0 ms'
 						disabled
 					/>
 				</div>
