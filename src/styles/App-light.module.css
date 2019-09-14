@@ -50,13 +50,8 @@
 .form-btn {
 	width: 100%;
 	height: 36px;
-}
-
-.form-btn:hover {
-	background: #FFFFFF;
-	color: #45444F;
-	transition-property: background;
-	transition-duration: 0.5s;
+	outline: none;
+	border: none;
 }
 
 .blue-btn {
@@ -65,16 +60,34 @@
 	background: #5575E5;
 }
 
+.blue-btn:hover {
+	transition-property: background;
+	transition-duration: 0.5s;
+	background: linear-gradient(0deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.1)), #5575E5;
+}
+
 .scarlet-btn {
 	transition-property: background;
 	transition-duration: 0.5s;
 	background: #DB4F58;
 }
 
+.scarlet-btn:hover {
+	transition-property: background;
+	transition-duration: 0.5s;
+	background: linear-gradient(0deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.1)), #DB4F58;
+}
+
 .grey-btn {
 	transition-property: background;
 	transition-duration: 0.5s;
   	background: #45444F;
+}
+
+.grey-btn:hover {
+	transition-property: background;
+	transition-duration: 0.5s;
+	background: linear-gradient(0deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.1)), #45444F;
 }
 
 #logo {

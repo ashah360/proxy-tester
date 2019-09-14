@@ -51,13 +51,7 @@
 	width: 100%;
 	height: 36px;
 	outline: none;
-}
-
-.form-btn:hover {
-	transition-property: background;
-	transition-duration: 0.5s;
-	background: #45444F;
-	color: #DDDEE8;
+	border: none;
 }
 
 .blue-btn {
@@ -67,25 +61,39 @@
 	border: none;
 }
 
+.blue-btn:hover {
+	transition-property: background;
+	transition-duration: 0.5s;
+	background: linear-gradient(0deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.1)), #5575E5;
+}
+
 .scarlet-btn {
 	background: #242329;
-	transition-property: border;
-	transition-duration: 0.5s;
+	transition-property: background, border;
+	transition-duration: 0.5s, 0.5s;
 	border: 2px solid #DB4F58;
 	box-sizing: border-box;
 	border-radius: 6px;
 }
 
+.scarlet-btn:hover {
+	transition-property: background, border;
+	transition-duration: 0.5s, 0.5s;
+	background: linear-gradient(0deg, rgba(219, 79, 88, 0.2), rgba(219, 79, 88, 0.2));
+	border: 2px solid #DB4F58;
+}
+
 .grey-btn {
-	transition-property: background;
-	transition-duration: 0.5s;
+	transition-property: background, border;
+	transition-duration: 0.5s, 0.5s;
 	background: #242329;
 	border: 2px solid #45444F;
 }
 
 .grey-btn:hover {
-	transition-property: border;
-	transition-duration: 0.5s;
+	transition-property: background, border;
+	transition-duration: 0.5s, 0.5s;
+	background: linear-gradient(0deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.1));
 	border: 2px solid #45444F;
 }
 
