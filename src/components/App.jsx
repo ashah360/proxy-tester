@@ -28,16 +28,15 @@ import '../styles/App.css';
 
 const DEFAULT_DOMAIN = 'kith.com';
 
-function App() {
+Array.prototype._push = function (item) {
+	this.push(item);
+
+	return this;
+};
+
+function App () {
 	// References
 	const inputProxy = useRef(null);
-	const inputPort = useRef(null);
-	const inputUsername = useRef(null);
-	const inputPassword = useRef(null);
-	const inputDomain = useRef(null);
-	const ping = useRef(null);
-	const testPingBtn = useRef(null);
-	const connectToProxyBtn = useRef(null);
 
 	const translations = {
 		proxyText: {
@@ -118,51 +117,73 @@ function App() {
 	const [region, setRegion] = useState(localStorage.getItem('region'));
 	const [theme, setTheme] = useState(localStorage.getItem('theme'));
 	const [divider, setDivider] = useState((theme === 'light') ? Divider : DividerDark);
+
 	const [themeCSS] = useState({
 		light: LightTheme,
 		dark: DarkTheme
 	});
 	const [flags, setFlags] = useState({
-		US: localStorage.getItem('region') === 'US' ? USFlag : ((theme === 'light') ? USFlagFaded : USFlagFadedDark),
-		JP: localStorage.getItem('region') === 'JP' ? JPFlag : ((theme === 'light') ? JPFlagFaded : JPFlagFadedDark)
+		US: region === 'US' ? USFlag : ((theme === 'light') ? USFlagFaded : USFlagFadedDark),
+		JP: region === 'JP' ? JPFlag : ((theme === 'light') ? JPFlagFaded : JPFlagFadedDark)
 	});
 
 	const css = themeCSS[theme];
 
+	const [ping, setPing] = useState('0 ms');
+	const [proxyText, setProxyText] = useState({});
+	const [connectText, setConnectBtnText] = useState(translations.connectText[region]);
+	const [pingBtnText, setPingBtnText] = useState(translations.pingTestText[region]);
+
+	const [connectBtnClasses, setConnectBtnClasses] = useState([css['form-btn'], css['grey-btn']]);
+
 	// componentDidMount
 	useEffect(() => {
-		const proxySettings = JSON.parse(localStorage.getItem('proxySettings'));
+		const { host, port, username, password, domain, connected } = JSON.parse(localStorage.getItem('proxySettings'));
 
-		inputProxy.current.value = proxySettings.host;
-		inputPort.current.value = proxySettings.port;
-		inputUsername.current.value = proxySettings.username;
-		inputPassword.current.value = proxySettings.password;
-		inputDomain.current.value = proxySettings.domain;
+		setProxyText({
+			host,
+			username,
+			password,
+			port,
+			domain
+		});
 
-		if (proxySettings.connected) {
-			connectToProxyBtn.current.innerHTML = translations.disconnectText[region];
-
-			connectToProxyBtn.current.classList.remove(css['grey-btn']);
-			connectToProxyBtn.current.classList.add(css['scarlet-btn']);
+		if (connected) {
+			setConnectBtnText(translations.disconnectText[region]);
+			setConnectBtnClasses(connectBtnClasses
+				.filter((c) => !c.includes('grey-btn'))
+				._push(css['scarlet-btn'])
+			);
 		}
 	}, []);
 
-	// componentDidUpdate
+	// componentDidUpdate - only when values in dependency array change
 	useEffect(() => {
-		const proxySettings = JSON.parse(localStorage.getItem('proxySettings'));
+		console.log('fired');
 
-		if (proxySettings.connected) {
-			connectToProxyBtn.current.innerHTML = translations.disconnectText[region];
+		const { connected } = JSON.parse(localStorage.getItem('proxySettings'));
 
-			connectToProxyBtn.current.classList.remove(css['grey-btn']);
-			connectToProxyBtn.current.classList.add(css['scarlet-btn']);
+		if (connected) {
+			setConnectBtnText(translations.disconnectText[region]);
+			setConnectBtnClasses(connectBtnClasses
+				.filter((c) => !c.includes('grey-btn'))
+				._push(css['scarlet-btn'])
+			);
+		}
+		else {
+			setConnectBtnText(translations.connectText[region]);
+			setConnectBtnClasses(connectBtnClasses
+				.filter((c) => !c.includes('grey-btn'))
+				._push(css['grey-btn'])
+			);
 		}
 
+		setPingBtnText(translations.pingTestText[region]);
 		setFlags({
-			US: localStorage.getItem('region') === 'US' ? USFlag : ((theme === 'light') ? USFlagFaded : USFlagFadedDark),
-			JP: localStorage.getItem('region') === 'JP' ? JPFlag : ((theme === 'light') ? JPFlagFaded : JPFlagFadedDark)
+			US: region === 'US' ? USFlag : ((theme === 'light') ? USFlagFaded : USFlagFadedDark),
+			JP: region === 'JP' ? JPFlag : ((theme === 'light') ? JPFlagFaded : JPFlagFadedDark)
 		});
-	});
+	}, [proxyText, region, theme]);
 
 	const connectToProxy = proxy => {
 		console.log('Connecting to proxy');
@@ -230,7 +251,6 @@ function App() {
 		const updatedTheme = (theme === 'light') ? 'dark' : 'light';
 
 		localStorage.setItem('theme', updatedTheme);
-
 		setTheme(updatedTheme);
 		setDivider((updatedTheme === 'light') ? Divider : DividerDark);
 
@@ -253,7 +273,13 @@ function App() {
 
 	const handleProxySettingChange = (type, e) => {
 		const proxySettings = JSON.parse(localStorage.getItem('proxySettings'));
+
 		proxySettings[type] = e.target.value;
+
+		setProxyText({
+			...proxyText,
+			[type]: e.target.value
+		});
 		localStorage.setItem('proxySettings', JSON.stringify(proxySettings));
 	};
 
@@ -284,17 +310,23 @@ function App() {
 		console.log(pasteData);
 
 		if (split.length === 2) {
-			inputProxy.current.value = split[0];
-			inputPort.current.value = split[1];
+			setProxyText({
+				...proxyText,
+				host: split[0],
+				port: split[1]
+			});
 
 			proxySettings.host = split[0];
 			proxySettings.port = split[1];
 		}
 		else if (split.length === 4) {
-			inputProxy.current.value = split[0];
-			inputPort.current.value = split[1];
-			inputUsername.current.value = split[2];
-			inputPassword.current.value = split[3];
+			setProxyText({
+				...proxyText,
+				host: split[0],
+				port: split[1],
+				username: split[2],
+				password: split[3]
+			});
 
 			proxySettings.host = split[0];
 			proxySettings.port = split[1];
@@ -308,27 +340,28 @@ function App() {
 	const handleConnectBtnClick = _e => {
 		const proxySettings = JSON.parse(localStorage.getItem('proxySettings'));
 		if (proxySettings.connected) {
-			connectToProxyBtn.current.innerHTML =
-				translations.disconnectingText[region];
-
+			setConnectBtnText(translations.disconnectingText[region]);
+			
 			disconnectProxy();
 
-			connectToProxyBtn.current.classList.remove(css['scarlet-btn']);
-			connectToProxyBtn.current.classList.add(css['grey-btn']);
-
-			connectToProxyBtn.current.innerHTML = translations.connectText[region];
+			setConnectBtnText(translations.connectText[region]);
+			setConnectBtnClasses(connectBtnClasses
+				.filter((c) => !c.includes('scarlet-btn'))
+				._push(css['grey-btn'])
+			);
 
 			proxySettings.connected = false;
 			localStorage.setItem('proxySettings', JSON.stringify(proxySettings));
 		} else {
-			connectToProxyBtn.current.innerHTML = translations.connectingText[region];
+			setConnectBtnText(translations.connectingText[region]);
 
 			connectToProxy(proxySettings);
 
-			connectToProxyBtn.current.classList.remove(css['grey-btn']);
-			connectToProxyBtn.current.classList.add(css['scarlet-btn']);
-
-			connectToProxyBtn.current.innerHTML = translations.disconnectText[region];
+			setConnectBtnText(translations.disconnectText[region]);
+			setConnectBtnClasses(connectBtnClasses
+				.filter((c) => !c.includes('grey-btn'))
+				._push(css['scarlet-btn'])
+			);
 
 			proxySettings.connected = true;
 			localStorage.setItem('proxySettings', JSON.stringify(proxySettings));
@@ -338,16 +371,13 @@ function App() {
 	const handlePingTest = e => {
 		e.preventDefault();
 
-		testPingBtn.current.innerHTML = translations.pingTestingText[region];
+		setPingBtnText(translations.pingTestingText[region]);
 
 		const proxy = {
-			host: inputProxy.current.value.trim(),
-			port: parseInt(inputPort.current.value.trim()),
-			username: inputUsername.current.value.trim(),
-			password: inputPassword.current.value.trim()
+			...proxyText
 		};
 
-		const formattedDomain = inputDomain.current.value
+		const formattedDomain = proxyText.domain
 			.trim()
 			.replace(/http(s|)(:\/\/|)(www\.|)/, '');
 		const testDomain = 'https://' + formattedDomain;
@@ -387,22 +417,22 @@ function App() {
 				'X-Requested-With': 'XMLHttpRequest'
 			}
 		}).then((response) => {
-			ping.current.value = `${Date.now() - startTime} ms`;
+			setPing(`${Date.now() - startTime} ms`);
 
-			console.log(`Got ping: ${ping.current.value}`);
+			console.log(`Got ping: ${ping}`);
 
 			return response.text();
 		}).then((text) => {
 			console.log('Response:', text);
 
-			testPingBtn.current.innerHTML = translations.pingTestText[region];
+			setPingBtnText(translations.pingTestText[region]);
 
 			disconnectProxy();
 		}).catch((err) => {
 			console.error(err);
 
-			testPingBtn.current.innerHTML = translations.pingTestText[region];
-			ping.current.value = `TIMEOUT`;
+			setPingBtnText(translations.pingTestText[region]);
+			setPing('TIMEOUT');
 
 			disconnectProxy();
 		});
@@ -446,9 +476,9 @@ function App() {
 					<input
 						id='inputProxy'
 						className={css['input']}
-						spellcheck='false'
+						spellCheck={false}
 						onChange={e => handleProxySettingChange('host', e)}
-						ref={inputProxy}
+						value={proxyText.host}
 						type='text'
 					/>
 				</div>
@@ -462,9 +492,9 @@ function App() {
 					<input
 						id='inputPort'
 						className={css['input']}
-						spellcheck='false'
+						spellCheck={false}
 						onChange={e => handleProxySettingChange('port', e)}
-						ref={inputPort}
+						value={proxyText.port}
 						type='text'
 					/>
 				</div>
@@ -483,9 +513,9 @@ function App() {
 					<input
 						id='inputUsername'
 						className={css['input']}
-						spellcheck='false'
+						spellCheck={false}
 						onChange={e => handleProxySettingChange('username', e)}
-						ref={inputUsername}
+						value={proxyText.username}
 						type='text'
 					/>
 				</div>
@@ -504,9 +534,9 @@ function App() {
 					<input
 						id='inputPassword'
 						className={css['input']}
-						spellcheck='false'
+						spellCheck={false}
 						onChange={e => handleProxySettingChange('password', e)}
-						ref={inputPassword}
+						value={proxyText.password}
 						type='password'
 					/>
 				</div>
@@ -524,10 +554,10 @@ function App() {
 					<input
 						id='inputDomain'
 						className={css['input']}
-						spellcheck='false'
+						spellCheck={false}
 						onChange={e => handleProxySettingChange('domain', e)}
+						value={proxyText.domain}
 						type='text'
-						ref={inputDomain}
 						placeholder='kith.com'
 					/>
 				</div>
@@ -541,8 +571,8 @@ function App() {
 					<input
 						id={css['ping']}
 						className={css['input']}
-						spellcheck='false'
-						ref={ping}
+						spellCheck={false}
+						value={ping}
 						type='text'
 						disabled
 					/>
@@ -550,19 +580,17 @@ function App() {
 
 				<button
 					style={{ marginTop: '15px' }}
-					className={[css['form-btn'], css['blue-btn'], css['ripple']].join(' ')}
+					className={[css['form-btn'], css['blue-btn']].join(' ')}
 					onClick={handlePingTest}
-					ref={testPingBtn}
 				>
-					{translations.pingTestText[region]}
+					{pingBtnText}
 				</button>
 				<button
 					style={{ marginTop: '16px', marginBottom: '25px' }}
-					className={[css['form-btn'], css['grey-btn'], css['ripple']].join(' ')}
+					className={connectBtnClasses.join(' ')}
 					onClick={handleConnectBtnClick}
-					ref={connectToProxyBtn}
 				>
-					{translations.connectText[region]}
+					{connectText}
 				</button>
 			</div>
 		</div>
