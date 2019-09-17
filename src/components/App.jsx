@@ -277,54 +277,6 @@ function App () {
 		localStorage.setItem('proxySettings', JSON.stringify(proxySettings));
 	};
 
-	const _handlePasteBtnClick = (_e) => {
-		console.log('Paste button clicked');
-
-		navigator.clipboard.readText().then(console.log);
-
-		navigator.clipboard.readText().then((pasteData) => {
-			const split = pasteData.toString().trim().split(':');
-			const proxySettings = JSON.parse(localStorage.getItem('proxySettings'));
-
-			console.log('Data:', pasteData);
-
-			if (split.length === 2) {
-				setProxyText({
-					...proxyText,
-					host: split[0],
-					port: split[1]
-				});
-
-				proxySettings.host = split[0];
-				proxySettings.port = split[1];
-			}
-			else if (split.length === 4) {
-				setProxyText({
-					...proxyText,
-					host: split[0],
-					port: split[1],
-					username: split[2],
-					password: split[3]
-				});
-
-				proxySettings.host = split[0];
-				proxySettings.port = split[1];
-				proxySettings.username = split[2];
-				proxySettings.password = split[3];
-			}
-
-			localStorage.setItem('proxySettings', JSON.stringify(proxySettings));
-		})
-		.catch((e) => {
-			console.error(e);
-
-			alert([
-				'There was an error reading the content from your clipboard!',
-				'Make sure your proxy is in the format ip:port OR ip:port:user:pass'
-			].join('\n\n'));
-		});
-	};
-
 	const handlePasteBtnClick = _e => {
 		console.log('Paste button clicked');
 
