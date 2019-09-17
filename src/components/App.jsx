@@ -1,6 +1,5 @@
 /* global chrome */
 import React, {
-	useRef,
 	useState,
 	useEffect
 } from 'react';
@@ -35,9 +34,6 @@ Array.prototype._push = function (item) {
 };
 
 function App () {
-	// References
-	const inputProxy = useRef(null);
-
 	const translations = {
 		proxyText: {
 			US: 'Proxy IP',
@@ -159,8 +155,6 @@ function App () {
 
 	// componentDidUpdate - only when values in dependency array change
 	useEffect(() => {
-		console.log('fired');
-
 		const { connected } = JSON.parse(localStorage.getItem('proxySettings'));
 
 		if (connected) {
@@ -283,31 +277,75 @@ function App () {
 		localStorage.setItem('proxySettings', JSON.stringify(proxySettings));
 	};
 
+	const _handlePasteBtnClick = (_e) => {
+		console.log('Paste button clicked');
+
+		navigator.clipboard.readText().then(console.log);
+
+		navigator.clipboard.readText().then((pasteData) => {
+			const split = pasteData.toString().trim().split(':');
+			const proxySettings = JSON.parse(localStorage.getItem('proxySettings'));
+
+			console.log('Data:', pasteData);
+
+			if (split.length === 2) {
+				setProxyText({
+					...proxyText,
+					host: split[0],
+					port: split[1]
+				});
+
+				proxySettings.host = split[0];
+				proxySettings.port = split[1];
+			}
+			else if (split.length === 4) {
+				setProxyText({
+					...proxyText,
+					host: split[0],
+					port: split[1],
+					username: split[2],
+					password: split[3]
+				});
+
+				proxySettings.host = split[0];
+				proxySettings.port = split[1];
+				proxySettings.username = split[2];
+				proxySettings.password = split[3];
+			}
+
+			localStorage.setItem('proxySettings', JSON.stringify(proxySettings));
+		})
+		.catch((e) => {
+			console.error(e);
+
+			alert([
+				'There was an error reading the content from your clipboard!',
+				'Make sure your proxy is in the format ip:port OR ip:port:user:pass'
+			].join('\n\n'));
+		});
+	};
+
 	const handlePasteBtnClick = _e => {
 		console.log('Paste button clicked');
 
-		function getClipboard() {
-			let result = null;
-			inputProxy.current.value = '';
-			inputProxy.current.select();
+		function readClipboard() {
+			const t = document.createElement('input');
+			document.body.appendChild(t);
+			t.focus();
 
-			if (document.execCommand('paste')) {
-				result = inputProxy.current.value;
-			} else {
-				console.error('failed to get clipboard content');
-			}
+			document.execCommand('paste');
 
-			inputProxy.current.value = '';
-			inputProxy.current.blur();
+			const clipboardText = t.value;
+			console.log(clipboardText);
 
-			return result;
+			document.body.removeChild(t);
+
+			return clipboardText;
 		}
 
-		const pasteData = getClipboard();
+		const pasteData = readClipboard();
 		const split = pasteData.toString().trim().split(':');
 		const proxySettings = JSON.parse(localStorage.getItem('proxySettings'));
-
-		console.log(pasteData);
 
 		if (split.length === 2) {
 			setProxyText({
