@@ -1,11 +1,10 @@
-@import url('https://fonts.googleapis.com/css?family=Roboto&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Roboto:light,regular,medium,thin,italic,mediumitalic,bold&display=swap');
 
 img {
   	-webkit-user-drag: none;
   	-khtml-user-drag: none;
 	-moz-user-drag: none;
 	-o-user-drag: none;
-	user-drag: none;
 }
 
 input {
@@ -33,17 +32,18 @@ input:blur {
 button {
 	cursor: pointer;
 	text-transform: uppercase;
-	color: #DDDEE8;
+	color: #FFFFFF;
 	border-radius: 6px;
 	font-family: 'Roboto', sans-serif, !important;
 	font-style: normal;
-	font-weight: 900;
+	font-weight: bold;
 	font-size: 14px;
 	line-height: 16px;
 	text-align: center;
 	letter-spacing: 0.05em;
 	outline: none;
 	box-shadow: none;
+	-webkit-font-smoothing: antialiased;
 }
 
 *:focus {
