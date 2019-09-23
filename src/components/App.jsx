@@ -180,6 +180,8 @@ function App () {
 	}, [proxyText, region, theme]);
 
 	const connectToProxy = proxy => {
+		if (!proxy.host || !proxy.port) return;
+
 		console.log('Connecting to proxy');
 
 		let useAuthCredentials = false;
@@ -215,8 +217,7 @@ function App () {
 							username: proxy.username.trim(),
 							password: proxy.password.trim()
 						}
-					} :
-					{};
+					} : {};
 			}
 
 			chrome.webRequest.onAuthRequired.addListener(
@@ -329,6 +330,7 @@ function App () {
  
 	const handleConnectBtnClick = _e => {
 		const proxySettings = JSON.parse(localStorage.getItem('proxySettings'));
+
 		if (proxySettings.connected) {
 			setConnectBtnText(translations.disconnectingText[region]);
 			
@@ -343,6 +345,8 @@ function App () {
 			proxySettings.connected = false;
 			localStorage.setItem('proxySettings', JSON.stringify(proxySettings));
 		} else {
+			if (!proxySettings.host || !proxySettings.port) return;
+
 			setConnectBtnText(translations.connectingText[region]);
 
 			connectToProxy(proxySettings);
@@ -361,11 +365,13 @@ function App () {
 	const handlePingTest = e => {
 		e.preventDefault();
 
-		setPingBtnText(translations.pingTestingText[region]);
-
 		const proxy = {
 			...proxyText
 		};
+		
+		if (!proxy.host || !proxy.port) return;
+
+		setPingBtnText(translations.pingTestingText[region]);
 
 		const formattedDomain = proxyText.domain
 			.trim()
